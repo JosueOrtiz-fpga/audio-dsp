@@ -2,6 +2,8 @@ class test_base#(DATA_WIDTH_BYTES);
 
     string _name;
 
+    int _fd;
+
     virtual axis_if axis_vif;
     virtual i2s_if i2s_vif;
 
@@ -10,31 +12,34 @@ class test_base#(DATA_WIDTH_BYTES);
     endfunction
 
     task applyReset(int numOfRstCycles, int totalCycles);
+        openLogFile();
         axis_vif.aresetn <= 1'b0;
-        $display("axis.tvalid=%b axis.tready=%b, axis.tdata=0x%x axis.tlast=%b",
-            axis_vif.tvalid, axis_vif.tready, axis_vif.tdata, axis_vif.tlast);
-        $display("i2s.sck=%b i2s.ws=%b, i2s.d=%b",
-            i2s_vif.sck, i2s_vif.ws, i2s_vif.d);
+        filePrintIfs(_fd);
         repeat(numOfRstCycles) begin
             @(posedge axis_vif.aclk);
-            $display("axis.tvalid=%b axis.tready=%b, axis.tdata=0x%x axis.tlast=%b",
-                axis_vif.tvalid, axis_vif.tready, axis_vif.tdata, axis_vif.tlast);
-            $display("i2s.sck=%b i2s.ws=%b, i2s.d=%b",
-                i2s_vif.sck, i2s_vif.ws, i2s_vif.d);
+            filePrintIfs(_fd);
         end
         axis_vif.aresetn <= 1'b0;
-        $display("axis.tvalid=%b axis.tready=%b, axis.tdata=0x%x axis.tlast=%b",
-            axis_vif.tvalid, axis_vif.tready, axis_vif.tdata, axis_vif.tlast);
-        $display("i2s.sck=%b i2s.ws=%b, i2s.d=%b",
-            i2s_vif.sck, i2s_vif.ws, i2s_vif.d);
+        filePrintIfs(_fd);
         repeat(numOfRstCycles) begin
             @(posedge axis_vif.aclk);
-            $display("axis.tvalid=%b axis.tready=%b, axis.tdata=0x%x axis.tlast=%b",
-                axis_vif.tvalid, axis_vif.tready, axis_vif.tdata, axis_vif.tlast);
-            $display("i2s.sck=%b i2s.ws=%b, i2s.d=%b",
-                i2s_vif.sck, i2s_vif.ws, i2s_vif.d);
+            filePrintIfs(_fd);
         end
+        closeLogFile();
     endtask : applyReset
 
+    function void filePrintIfs(int fd);
+        axis_vif.filePrint(fd);
+        i2s_vif.filePrint(fd);
+    endfunction :filePrintIfs
+
+    function void openLogFile();
+        _fd = $fopen({_name, ".txt"});
+        if(!_fd) $error("Could not open %s.txt", _name);
+    endfunction : openLogFile
+
+    function void closeLogFile();
+        $fclose(_fd);
+    endfunction : closeLogFile
 
 endclass : test_base

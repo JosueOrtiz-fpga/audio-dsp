@@ -16,5 +16,10 @@ interface axis_if#(DATA_WIDTH_BYTES=4);
         input aclk, aresetn, tready,
         output tvalid, tdata, tlast
     );
-    
+
+    function void filePrint(int fd);
+        $fdisplay(fd,"axis.tvalid=%b axis.tready=%b, axis.tdata=0x%x axis.tlast=%b",
+            tvalid, tready, tdata, tlast);
+    endfunction : filePrint
+
 endinterface : axis_if
