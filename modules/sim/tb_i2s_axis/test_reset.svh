@@ -27,9 +27,10 @@ class test_reset#(DATA_WIDTH_BYTES=4) extends test_base#(DATA_WIDTH_BYTES);
             end
         join_any
 
-        openLogFile("a");
-        $fdisplay(_fd,"sck_count while aresetn was low = %0d", sck_count_aresetn_low);
-        $fdisplay(_fd,"sck_count while aresetn was high = %0d", sck_count_aresetn_high);
-        closeLogFile();
+        openResultFile("a");
+        $fdisplay(_fd_result,"sck_count while aresetn was low = %0d", sck_count_aresetn_low);
+        $fdisplay(_fd_result,"sck_count while aresetn was high = %0d", sck_count_aresetn_high);
+        closeResultFile();
+        compareFiles();
     endtask : run
 endclass : test_reset
