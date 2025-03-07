@@ -2,3 +2,9 @@
 .settings
 .library_mapping.xml
 .project
+
+# utility submodules
+utils/
+
+# vunit simulation outputs
+modules/sim/*/vunit_out

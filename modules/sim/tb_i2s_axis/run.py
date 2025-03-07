@@ -2,7 +2,7 @@ import subprocess
 import os
 from pathlib import Path
 import sys
-sys.path.append("C:\\vunit")
+sys.path.append("../../../utils/vunit")
 from vunit import VUnit
 
 
