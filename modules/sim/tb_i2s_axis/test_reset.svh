@@ -5,8 +5,11 @@ class test_reset#(DATA_WIDTH_BYTES=4) extends test_base#(DATA_WIDTH_BYTES);
     endfunction : new
 
     task run();
-        int sck_count;
-        sck_count = 0;
+        int sck_count_aresetn_low;
+        int sck_count_aresetn_high;
+        sck_count_aresetn_low = 0;
+        sck_count_aresetn_high = 0;
+
         initDrivers();
         fork
             begin
@@ -14,11 +17,19 @@ class test_reset#(DATA_WIDTH_BYTES=4) extends test_base#(DATA_WIDTH_BYTES);
             end
             begin
                 while(1) begin
-                    @(posedge i2s_vif.sck && !axis_vif.aresetn) sck_count ++;
+                    @(posedge i2s_vif.sck && !axis_vif.aresetn) sck_count_aresetn_low ++;
+                end
+            end
+            begin
+                while(1) begin
+                    @(posedge i2s_vif.sck && axis_vif.aresetn) sck_count_aresetn_high ++;
                 end
             end
         join_any
 
-        $display("sck_count = %0d", sck_count);
+        openLogFile("a");
+        $fdisplay(_fd,"sck_count while aresetn was low = %0d", sck_count_aresetn_low);
+        $fdisplay(_fd,"sck_count while aresetn was high = %0d", sck_count_aresetn_high);
+        closeLogFile();
     endtask : run
 endclass : test_reset

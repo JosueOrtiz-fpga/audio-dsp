@@ -12,24 +12,25 @@ class test_base#(DATA_WIDTH_BYTES);
     endfunction
 
     task initDrivers();
+        axis_vif.aresetn <= 1'b0;
         axis_vif.tready <= 1'b0;
         i2s_vif.d <= 1'b0;
         i2s_vif.ws <= 1'b1;
     endtask : initDrivers
     
     task applyReset(int numOfRstCycles, int totalCycles);
-        openLogFile();
-        axis_vif.aresetn <= 1'b0;
+        openLogFile("w");
         filePrintIfs(_fd);
-        repeat(numOfRstCycles) begin
+        repeat(2) @(posedge axis_vif.aclk);
+        filePrintIfs(_fd);
+        repeat(numOfRstCycles-2) begin
             @(posedge axis_vif.aclk);
-            filePrintIfs(_fd);
         end
         axis_vif.aresetn <= 1'b1;
+        repeat(2) @(posedge axis_vif.aclk);
         filePrintIfs(_fd);
-        repeat(numOfRstCycles) begin
+        repeat(totalCycles-numOfRstCycles-2) begin
             @(posedge axis_vif.aclk);
-            filePrintIfs(_fd);
         end
         closeLogFile();
     endtask : applyReset
@@ -39,8 +40,8 @@ class test_base#(DATA_WIDTH_BYTES);
         i2s_vif.filePrint(fd);
     endfunction :filePrintIfs
 
-    function void openLogFile();
-        _fd = $fopen({_name, ".txt"});
+    function void openLogFile(string permission="r");
+        _fd = $fopen({_name, ".txt"}, permission);
         if(!_fd) $error("Could not open %s.txt", _name);
     endfunction : openLogFile
 

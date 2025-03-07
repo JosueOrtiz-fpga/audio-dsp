@@ -1,0 +1,8 @@
+aresetn=x axis.tvalid=x axis.tready=x, axis.tdata=0xx axis.tlast=x
+i2s.sck=0 i2s.ws=x, i2s.d=x
+aresetn=0 axis.tvalid=0 axis.tready=0, axis.tdata=0xx axis.tlast=0
+i2s.sck=0 i2s.ws=1, i2s.d=0
+aresetn=1 axis.tvalid=0 axis.tready=0, axis.tdata=0xx axis.tlast=0
+i2s.sck=0 i2s.ws=1, i2s.d=0
+sck_count while aresetn was low = 3
+sck_count while aresetn was high = 4
