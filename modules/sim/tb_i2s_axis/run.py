@@ -19,30 +19,21 @@ os.environ['VUNIT_SIMULATOR'] = "modelsim"
 # ROOT
 ROOT = Path(__file__).resolve().parent
 # Sources path for DUT
-DUT_PATH = ROOT / "../.."
+DUT_PATH = ROOT / "../../i2s_axis"
 # Sources path for TB
-TEST_PATH = ROOT
+TB_PATH = ROOT
 
 VU = VUnit.from_argv()
 VU.add_verilog_builtins()
 
 # create design library
-design_lib = VU.add_library("design_lib")
+design_lib = VU.add_library("lib_i2s_axis")
 # add design source files to design_lib
 design_lib.add_source_files([DUT_PATH / "*.sv"])
  
 # create testbench library
-tb_lib = VU.add_library("tb_counter_lib")
+tb_lib = VU.add_library("lib_tb_i2s_axis")
 # add testbench source files to tb_lib
-tb_lib.add_source_files([TEST_PATH / "*.sv"])
+tb_lib.add_source_files([TB_PATH / "*.sv"])
 
 VU.main()
-
-# result = subprocess.run([VLIB_EXE, "work"], shell=True, capture_output=True, text=True)
-# if(result.returncode !=0):
-#     print(result.stdout)
-# result = subprocess.run([VMAP_EXE, "work", "work"], shell=True, capture_output=True, text=True)
-# if(result.returncode !=0):
-#     print(result.stdout)
-# result = subprocess.run([VLOG_EXE, "../../counter.sv"], shell=True, capture_output=True, text=True)
-# print(result.stdout)
