@@ -5,6 +5,7 @@ class test_reset#(DATA_WIDTH_BYTES=4) extends test_base#(DATA_WIDTH_BYTES);
     endfunction : new
 
     task run();
+        initDrivers();
         applyReset(10,20);
     endtask : run
 endclass : test_reset

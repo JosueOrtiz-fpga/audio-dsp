@@ -11,6 +11,12 @@ class test_base#(DATA_WIDTH_BYTES);
         _name = name;
     endfunction
 
+    task initDrivers();
+        axis_vif.tready <= 1'b0;
+        i2s_vif.d <= 1'b0;
+        i2s_vif.ws <= 1'b1;
+    endtask : initDrivers
+    
     task applyReset(int numOfRstCycles, int totalCycles);
         openLogFile();
         axis_vif.aresetn <= 1'b0;
