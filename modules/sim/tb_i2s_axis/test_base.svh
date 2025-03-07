@@ -25,7 +25,7 @@ class test_base#(DATA_WIDTH_BYTES);
             @(posedge axis_vif.aclk);
             filePrintIfs(_fd);
         end
-        axis_vif.aresetn <= 1'b0;
+        axis_vif.aresetn <= 1'b1;
         filePrintIfs(_fd);
         repeat(numOfRstCycles) begin
             @(posedge axis_vif.aclk);
