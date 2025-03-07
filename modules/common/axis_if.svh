@@ -18,8 +18,8 @@ interface axis_if#(DATA_WIDTH_BYTES=4);
     );
 
     function void filePrint(int fd);
-        $fdisplay(fd,"axis.tvalid=%b axis.tready=%b, axis.tdata=0x%x axis.tlast=%b",
-            tvalid, tready, tdata, tlast);
+        $fdisplay(fd,"[%0t] axis.tvalid=%b axis.tready=%b, axis.tdata=0x%0x axis.tlast=%b",
+            $time, tvalid, tready, tdata, tlast);
     endfunction : filePrint
 
 endinterface : axis_if

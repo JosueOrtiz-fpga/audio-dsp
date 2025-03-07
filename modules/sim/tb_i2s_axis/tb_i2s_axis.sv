@@ -2,6 +2,8 @@
 `include "test_base.svh"
 `include "test_reset.svh"
 
+`timescale 1ns/1ps
+
 module tb_i2s_axis(
 );
     bit tb_axis_clk;
@@ -25,6 +27,9 @@ module tb_i2s_axis(
     assign i2s_rx_if.sck = tb_i2s_sck;
 
     `TEST_SUITE begin
+        `TEST_SUITE_SETUP begin
+            $timeformat(-9,2,"ns");
+        end
         `TEST_CASE("test_reset") begin
             test_reset RstTest;
             RstTest = new("test_reset");

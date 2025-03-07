@@ -9,7 +9,7 @@ interface i2s_if;
     );
 
     function void filePrint(int fd);
-        $fdisplay(fd,"i2s.sck=%b i2s.ws=%b, i2s.d=%b",sck, ws, d);
+        $fdisplay(fd,"[%0t] i2s.sck=%b i2s.ws=%b, i2s.d=%b", $time, sck, ws, d);
     endfunction : filePrint
 
     
