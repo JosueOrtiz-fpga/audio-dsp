@@ -1,4 +1,6 @@
 `include "vunit_defines.svh"
+`include "test_base.svh"
+`include "test_reset.svh"
 
 module tb_i2s_axis(
 );
@@ -23,11 +25,12 @@ module tb_i2s_axis(
     assign i2s_rx_if.sck = tb_i2s_sck;
 
     `TEST_SUITE begin
-        `TEST_CASE("reset_check") begin
-            axis_tx_if.aresetn <= 1'b0;
-            @(posedge tb_i2s_sck);
-            @(posedge tb_i2s_sck);
-            @(posedge tb_i2s_sck);
+        `TEST_CASE("test_reset") begin
+            test_reset RstTest;
+            RstTest = new("test_reset");
+            RstTest.axis_vif = axis_tx_if;
+            RstTest.i2s_vif = i2s_rx_if;
+            RstTest.run();
         end
         end
 endmodule

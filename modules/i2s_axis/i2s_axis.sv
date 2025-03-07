@@ -13,7 +13,7 @@ module i2s_axis#() (
 
     logic [MAX_BIT_DETPH-1:0] i2s_d_reg0, i2s_d_reg1;
     logic i2s_ws_d;
-    logic[2:0] i2s_rstn_sync;
+    logic[2:0] i2s_rstn_sync = 2'b00;
     logic i2s_sample_valid;
 
     // I2S internal reset
