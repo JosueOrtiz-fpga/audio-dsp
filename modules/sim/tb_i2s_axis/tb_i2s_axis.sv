@@ -9,8 +9,14 @@ module tb_i2s_axis(
     bit tb_axis_clk;
     bit tb_i2s_sck;
 
-    always #20 tb_axis_clk = !tb_axis_clk;
-    always #200 tb_i2s_sck = !tb_i2s_sck;
+    parameter AXIS_CLK_FREQ_MHZ = 25; // @ 25 MHZ in Master Mode, I2S2 PMOD MCLK/LRCK: 512
+    parameter I2S_SCK_FREQ_MHZ = 25/8; // SCK/LRCLK is a constant 64 -> MCLK/SCK: 8
+    
+    localparam AXIS_CLK_PERIOD_NS = 1E3/AXIS_CLK_FREQ_MHZ;
+    localparam I2S_SCK_PERIOD_NS = 1E3/I2S_SCK_FREQ_MHZ;
+    
+    always #(AXIS_CLK_PERIOD_NS/2) tb_axis_clk = !tb_axis_clk;
+    always #(I2S_SCK_PERIOD_NS/2) tb_i2s_sck = !tb_i2s_sck;
 
     axis_if #(
     .DATA_WIDTH_BYTES(4)
